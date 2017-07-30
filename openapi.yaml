@@ -1,0 +1,30 @@
+swagger: "2.0"
+info:
+  description: "Manage the user"
+  title: "Glimpse Service User"
+  version: "1.0.0"
+host: "glimpse-service-user.endpoints.glimpse-123456.cloud.goog"
+x-google-endpoints:
+  - name: "glimpse-service-user.endpoints.glimpse-123456.cloud.goog"
+    target: 35.185.74.77
+basePath: "/"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+schemes:
+  - "https"
+paths:
+  "/healthz":
+    get:
+      description: "Check the health of the service"
+      operationId: "healthz"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Service is healthy"
+          schema:
+            properties:
+              status:
+                type: "boolean"
