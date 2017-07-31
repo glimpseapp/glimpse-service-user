@@ -5,7 +5,7 @@ metadata:
 spec:
   ports:
   - port: 80
-    targetPort: 8081
+    targetPort: 80
     protocol: TCP
     name: http
   selector:
@@ -24,17 +24,16 @@ spec:
         app: glimpse-service-user
     spec:
       containers:
-      - name: esp
-        image: gcr.io/endpoints-release/endpoints-runtime:1
-        args: [
-          "-p", "8081",
-          "-a", "127.0.0.1:80",
-          "-s", "glimpse-user-service.endpoints.glimpse-123456.cloud.goog",
-          "-v", "2017-07-29r9",
-        ]
-        ports:
-          - containerPort: 8081
-      - name: echo
+      - name: glimpse-service-user
         image: gcr.io/glimpse-123456/glimpse-service-user:latest
         ports:
           - containerPort: 80
+        env:
+          - name: MYSQL_DATABASE_USER
+            value: root
+          - name: MYSQL_DATABASE_PASSWORD
+            value: password
+          - name: MYSQL_DATABASE_DB
+            value: glimpse
+          - name: MYSQL_DATABASE_HOST
+            value: mysql

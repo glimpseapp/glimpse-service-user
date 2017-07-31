@@ -60,10 +60,10 @@ mysql = MySQL()
 app = Flask(__name__)
 
 # dev env
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'password'
-app.config['MYSQL_DATABASE_DB'] = 'glimpse'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+app.config['MYSQL_DATABASE_USER'] = os.getEnv('MYSQL_DATABASE_USER', 'root')
+app.config['MYSQL_DATABASE_PASSWORD'] = os.getEnv('MYSQL_DATABASE_PASSWORD', 'password')
+app.config['MYSQL_DATABASE_DB'] = os.getEnv('MYSQL_DATABASE_DB', 'glimpse')
+app.config['MYSQL_DATABASE_HOST'] = os.getEnv('MYSQL_DATABASE_HOST', 'localhost')
 
 mysql.init_app(app)
 
@@ -105,6 +105,11 @@ def find_user_by_id(user_id):
 
 @app.route("/")
 def healthcheck():
+    return json.dumps({"status": APIStatus.OK})
+
+
+@app.route("/health")
+def healthzcheck():
     return json.dumps({"status": APIStatus.OK})
 
 
