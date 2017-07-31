@@ -103,12 +103,12 @@ def find_user_by_id(user_id):
         return user
 
 
-@app.route("/")
+@app.route("/", methods=['GET'])
 def healthcheck():
     return json.dumps({"status": APIStatus.OK})
 
 
-@app.route("/health")
+@app.route("/health", methods=['GET'])
 def healthzcheck():
     return json.dumps({"status": APIStatus.OK})
 
