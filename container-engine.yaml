@@ -5,7 +5,7 @@ metadata:
 spec:
   ports:
   - port: 80
-    targetPort: 5000
+    targetPort: 80
     protocol: TCP
     name: http
   selector:
@@ -27,7 +27,7 @@ spec:
       - name: glimpse-service-user
         image: gcr.io/glimpse-123456/glimpse-service-user:latest
         ports:
-          - containerPort: 5000
+          - containerPort: 80
         env:
           - name: MYSQL_DATABASE_USER
             value: root

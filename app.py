@@ -60,10 +60,10 @@ mysql = MySQL()
 app = Flask(__name__)
 
 # dev env
-app.config['MYSQL_DATABASE_USER'] = os.getEnv('MYSQL_DATABASE_USER', 'root')
-app.config['MYSQL_DATABASE_PASSWORD'] = os.getEnv('MYSQL_DATABASE_PASSWORD', 'password')
-app.config['MYSQL_DATABASE_DB'] = os.getEnv('MYSQL_DATABASE_DB', 'glimpse')
-app.config['MYSQL_DATABASE_HOST'] = os.getEnv('MYSQL_DATABASE_HOST', 'localhost')
+app.config['MYSQL_DATABASE_USER'] = os.getenv('MYSQL_DATABASE_USER', 'root')
+app.config['MYSQL_DATABASE_PASSWORD'] = os.getenv('MYSQL_DATABASE_PASSWORD', 'password')
+app.config['MYSQL_DATABASE_DB'] = os.getenv('MYSQL_DATABASE_DB', 'glimpse')
+app.config['MYSQL_DATABASE_HOST'] = os.getenv('MYSQL_DATABASE_HOST', 'localhost')
 
 mysql.init_app(app)
 
@@ -507,4 +507,4 @@ def search_username(search_username):
 
 
 if __name__ == '__main__':
-    app.run(port=5000, host='0.0.0.0')
+    app.run(port=80, host='0.0.0.0')
