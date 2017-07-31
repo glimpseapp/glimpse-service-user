@@ -166,7 +166,7 @@ def me():
     if user is None:
         return make_response(json.dumps({"error": "Not Authenticated"}), 401)
     return json.dumps({
-        "token": user['token'],
+        "token": auth_token(),
         "user": {
             "username": user['username']
         }
@@ -174,7 +174,7 @@ def me():
 
 
 @app.route("/user/id/<search_user_id>")
-def user_by_id():
+def user_by_id(search_user_id):
     user = user_auth()
     if user is None:
         return make_response(json.dumps({"error": "Not Authenticated"}), 401)
