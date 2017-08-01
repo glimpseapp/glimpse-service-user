@@ -1,9 +1,14 @@
 import random
 import string
 import os
+
+import time
 from flask import Flask, json, make_response, request
 from flaskext.mysql import MySQL
 
+import os
+from google.cloud import storage
+from google.cloud.storage import Blob
 
 class NotificationType:
     FriendRequest = 1
@@ -52,8 +57,10 @@ class APIStatus:
 
 
 # config
-UPLOAD_FOLDER = "/static/upload/"
-UPLOAD_PATH = "/home/djnyc/api.juliano.nyc/littlewindow/static/upload"
+UPLOAD_PATH = "/tmp/"
+BUCKET_NAME = os.getenv("BUCKET_NAME", "glimpse-asset-old")
+
+HTTP_PORT = os.getenv("HTTP_PORT", 5000)
 
 # mysql
 mysql = MySQL()
@@ -197,14 +204,18 @@ def send():
     # get data
     from_id = request.form['from_id']
     to_id = request.form['to_id']
-    image = request.files['image']
+    image_file = request.files['image']
 
     # save image
-    filename_first, file_extension = os.path.splitext(image.filename)
+    filename_first, file_extension = os.path.splitext(image_file.filename)
     filename = filename_first + file_extension
-    image.save(os.path.join(UPLOAD_PATH, filename))
 
-    # save to db
+    # storage
+    client = storage.Client()
+    bucket = client.get_bucket(BUCKET_NAME)
+    blob = Blob(filename, bucket)
+    blob.upload_from_file(image_file)
+
     try:
         cursor.execute("INSERT INTO image (filename) VALUES (%s)", (filename))
         image_id = cursor.lastrowid
@@ -223,7 +234,7 @@ def send():
         "to_id": to_id,
         "image_id": image_id,
         "message_id": message_id,
-        "filename": UPLOAD_FOLDER + filename
+        "filename": filename
     })
 
 
@@ -273,6 +284,20 @@ def read_messages(handle_id):
         "results": messages,
         "count": len(messages)
     })
+
+
+@app.route("/get-image/<image_file>", methods=['GET'])
+def get_image(image_file):
+    return get_image_signed_url(image_file)
+
+
+def get_image_signed_url(image_file):
+    EXPIRATION_TIME = int(time.time()) + 3600
+    client = storage.Client()
+    bucket = client.get_bucket(BUCKET_NAME)
+    blob = Blob(image_file, bucket)
+    signed_url = blob.generate_signed_url(EXPIRATION_TIME)
+    return signed_url
 
 
 @app.route("/register", methods=['POST'])
@@ -507,4 +532,4 @@ def search_username(search_username):
 
 
 if __name__ == '__main__':
-    app.run(port=80, host='0.0.0.0')
+    app.run(port=HTTP_PORT, host='0.0.0.0')
