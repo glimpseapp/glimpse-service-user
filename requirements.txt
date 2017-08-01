@@ -1,4 +1,5 @@
 aniso8601==1.2.1
+apiclient==1.0.3
 cachetools==2.0.0
 certifi==2017.7.27.1
 chardet==3.0.4
@@ -9,6 +10,8 @@ Flask-MySQL==1.4.0
 Flask-RESTful==0.3.6
 future==0.16.0
 gapic-google-cloud-datastore-v1==0.15.3
+gcloud==0.18.3
+google-api-python-client==1.6.2
 google-auth==1.0.1
 google-auth-httplib2==0.0.2
 google-cloud-core==0.25.0
@@ -17,6 +20,7 @@ google-cloud-storage==1.2.0
 google-gax==0.15.13
 google-resumable-media==0.2.1
 googleapis-common-protos==1.5.2
+GoogleAppEngineCloudStorageClient==1.9.22.1
 grpcio==1.4.0
 httplib2==0.10.3
 idna==2.5
@@ -24,7 +28,7 @@ itsdangerous==0.24
 Jinja2==2.9.6
 jsonify==0.5
 MarkupSafe==1.0
-oauth2client==3.0.0
+oauth2client==4.1.2
 ply==3.8
 proto-google-cloud-datastore-v1==0.90.4
 protobuf==3.3.0
@@ -36,5 +40,6 @@ pytz==2017.2
 requests==2.18.2
 rsa==3.4.2
 six==1.10.0
+uritemplate==3.0.0
 urllib3==1.22
 Werkzeug==0.12.2

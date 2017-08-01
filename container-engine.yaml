@@ -29,6 +29,8 @@ spec:
         ports:
           - containerPort: 80
         env:
+          - name: HTTP_PORT
+            value: 80
           - name: MYSQL_DATABASE_USER
             value: root
           - name: MYSQL_DATABASE_PASSWORD
@@ -37,3 +39,5 @@ spec:
             value: glimpse
           - name: MYSQL_DATABASE_HOST
             value: mysql
+          - name: BUCKET_NAME
+            value: glimpse-asset-old
