@@ -8,7 +8,7 @@ Deploy
 ------
 Build docker image and push to Google container registry
 ```
-docker build -t grc.io/glimpse-123456/glimpse-service-user .
+docker build -t gcr.io/glimpse-123456/glimpse-service-user .
 gcloud docker -- push gcr.io/glimpse-123456/glimpse-service-user
 ```
 *Note: the the*
