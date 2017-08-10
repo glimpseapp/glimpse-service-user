@@ -1,28 +1,16 @@
 #!flask/bin/python
-from flask import Flask, request, jsonify
-from flask_restful import Resource, Api
+from flask import Flask
+from flask_restful import Api
+
+from conf.config import HTTP_HOST, HTTP_PORT
+from service.healthz import Healthz
+from service.user import GetUser
 
 app = Flask(__name__)
 api = Api(app)
 
-
-class Healthz(Resource):
-    def get(self):
-        return {"status": True}
-
-
-class User(Resource):
-    def put(self):
-        if not request.forms:
-            return jsonify({"error": "You must pass the user information"})
-
-        user = request.forms
-        return user
-
 api.add_resource(Healthz, '/healthz')
-api.add_resource(User, '/')
+api.add_resource(GetUser, '/user/<user_id>')
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=80)
-
-
+    app.run(host=HTTP_HOST, port=HTTP_PORT)
