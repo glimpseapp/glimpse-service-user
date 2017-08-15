@@ -46,8 +46,8 @@
     },
     "/user/{user_id}": {
       "get": {
-        "description": "test health with security enabled",
-        "operationId": "healthz-security",
+        "description": "Get the information of a selected user",
+        "operationId": "UserInfo",
         "parameters": [
           {
             "name": "user_id",
@@ -62,7 +62,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Return the value sent in input",
+            "description": "Return the user information",
             "schema": {
               "properties": {
                 "status": {
@@ -75,6 +75,38 @@
         "security": [
           { "firebase" : [] }
         ]
+      },
+      "put": {
+        "description": "Update the information of a selected user",
+        "operationId": "UserInfoUpdate",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Return true if the user was updated",
+            "schema": {
+              "properties": {
+                "status": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          { "firebase" : [] }
+        ]
+
       }
     }
   },

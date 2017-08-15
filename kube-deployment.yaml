@@ -16,7 +16,7 @@ spec:
           "-p", "8081",
           "-a", "127.0.0.1:5000",
           "-s", "glimpse-service-user.endpoints.glimpse-123456.cloud.goog",
-          "-v", "2017-08-10r6",
+          "-v", "2017-08-14r0",
         ]
         ports:
           - containerPort: 8081
@@ -25,5 +25,5 @@ spec:
         ports:
           - containerPort: 5000
         env:
-        - name: CASSANDRA_HOST
+        - name: CASSANDRA_HOSTS
           value: cassandra

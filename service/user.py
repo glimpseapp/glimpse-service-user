@@ -1,18 +1,70 @@
-from flask_restful import Resource
-from cassandra.cluster import Cluster
+import uuid
 
-from conf.config import CASSANDRA_HOST
+from cassandra.cqlengine import connection
+from cassandra.cqlengine.query import LWTException
+from flask import make_response
+from flask_restful import Resource, request
+
+from conf.config import CASSANDRA_HOSTS, USER_KEYSPACE
+from model.userinfobyid import UserInfoById, UserInfoByUsername
 
 
-class GetUser(Resource):
+class User(Resource):
     def get(self, user_id):
-        cluster = Cluster(CASSANDRA_HOST)
-        session = cluster.connect()
-        session.set_keyspace('glimpse')
-        rows = session.execute("SELECT * FROM glimpse.user WHERE user_id='" + user_id + "'")
-        users = []
-        for user_row in rows:
-            print(user_row.username, user_row.email)
-            users.append(user_row)
+        user_id = uuid.UUID(user_id)
 
-        return users;
+        connection.setup(hosts=CASSANDRA_HOSTS, default_keyspace=USER_KEYSPACE)
+        user = UserInfoById.get(user_id=user_id).to_object()
+        if not user:
+            return make_response("User not found", 404)
+
+        return user
+
+    def put(self, user_id):
+        user = request.get_json(silent=True)
+        if not user:
+            return make_response("Must send user information", 500)
+
+        connection.setup(hosts=CASSANDRA_HOSTS, default_keyspace=USER_KEYSPACE)
+
+        try:
+            UserInfoById.objects(user_id=user_id).if_exists().update(
+                username=user.get('username'),
+                email=user.get('email')
+            )
+
+            UserInfoByUsername.objects(user_id=user_id).delete()
+            UserInfoByUsername.create(
+                user_id=user_id,
+                username=user.get('username')
+            )
+
+            return UserInfoById.get(user_id=user_id).to_object()
+
+        except LWTException as e:
+            # handle failure case
+            print(e)
+            pass
+
+
+class CreateUser(User):
+    def post(self):
+        user = request.get_json(silent=True)
+        if not user:
+            return make_response("Must send user information", 500)
+
+        user_id = uuid.uuid4()
+
+        connection.setup(hosts=CASSANDRA_HOSTS, default_keyspace=USER_KEYSPACE)
+        UserInfoById.create(
+            user_id=user_id,
+            username=user.get('username'),
+            email=user.get('email')
+        )
+
+        UserInfoByUsername.create(
+            user_id=user_id,
+            username=user.get('username'),
+        )
+
+        return UserInfoById.get(user_id=user_id).to_object()
