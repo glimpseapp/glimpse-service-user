@@ -1,0 +1,75 @@
+swagger: '2.0'
+info:
+  description: Manage the user
+  title: Glimpse Service User
+  version: 1.0.0
+host: user.glimpse.online
+basePath: "/"
+consumes:
+- application/json
+produces:
+- application/json
+schemes:
+- https
+paths:
+
+  "/healthz":
+    get:
+      description: Check the health of the service
+      operationId: healthz
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Service is healthy
+          schema:
+            properties:
+              status:
+                type: boolean
+
+  "/user/{user_id}":
+    get:
+      description: Get the information of a selected user
+      operationId: UserInfo
+      parameters:
+      - name: user_id
+        in: path
+        description: ID of the user
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Return the user information
+          schema:
+            properties:
+              status:
+                type: boolean
+      security:
+      - api_key: []
+    put:
+      description: Update the user information
+      operationId: UserInfoUpdate
+      parameters:
+      - name: user_id
+        in: path
+        description: ID of the user
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Return true if the user was updated
+          schema:
+            properties:
+              status:
+                type: boolean
+      security:
+      - api_key: []
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: key
+    in: query

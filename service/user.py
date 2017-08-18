@@ -1,18 +1,14 @@
-import uuid
-
 from cassandra.cqlengine import connection
 from cassandra.cqlengine.query import LWTException
 from flask import make_response
 from flask_restful import Resource, request
 
 from conf.config import CASSANDRA_HOSTS, USER_KEYSPACE
-from model.userinfobyid import UserInfoById, UserInfoByUsername
+from model.user import UserInfoById, UserInfoByUsername
 
 
 class User(Resource):
     def get(self, user_id):
-        user_id = uuid.UUID(user_id)
-
         connection.setup(hosts=CASSANDRA_HOSTS, default_keyspace=USER_KEYSPACE)
         user = UserInfoById.get(user_id=user_id).to_object()
         if not user:
@@ -53,7 +49,7 @@ class CreateUser(User):
         if not user:
             return make_response("Must send user information", 500)
 
-        user_id = uuid.uuid4()
+        user_id = user.get("user_id")
 
         connection.setup(hosts=CASSANDRA_HOSTS, default_keyspace=USER_KEYSPACE)
         UserInfoById.create(

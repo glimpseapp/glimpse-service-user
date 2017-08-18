@@ -4,6 +4,15 @@ Glimpse Service User
 This service is responsible to write and read the user information into the database
 
 
+Install
+-------
+Install virtualenv and python dependencies
+```
+virtualenv -p python3 venv
+. venv/bin/activate
+```
+
+
 Deploy
 ------
 Build docker image and push to Google container registry
@@ -15,7 +24,7 @@ gcloud docker -- push gcr.io/glimpse-123456/glimpse-service-user
 
 
 *Update openapi.yaml and deploy*
-```gcloud service-management deploy openapi.yaml```
+```gcloud service-management deploy openapi.json```
 
 After you run the command above get the CONFIG_ID of the service you just deployed, it looks something like 2017-08-10r6. 
 Add the CONFIG_ID to the kube-deployment.yaml into the -v argument:
