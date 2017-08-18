@@ -15,8 +15,8 @@ spec:
         args: [
           "-p", "8081",
           "-a", "127.0.0.1:5000",
-          "-s", "glimpse-service-user.endpoints.glimpse-123456.cloud.goog",
-          "-v", "2017-08-14r0",
+          "-s", "user.glimpse.online",
+          "-v", "2017-08-17r0",
         ]
         ports:
           - containerPort: 8081
