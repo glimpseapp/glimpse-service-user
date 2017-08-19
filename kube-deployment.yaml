@@ -16,7 +16,7 @@ spec:
           "-p", "8081",
           "-a", "127.0.0.1:5000",
           "-s", "user.glimpse.online",
-          "-v", "2017-08-17r0",
+          "-v", "2017-08-18r5",
         ]
         ports:
           - containerPort: 8081

@@ -2,74 +2,115 @@ swagger: '2.0'
 info:
   description: Manage the user
   title: Glimpse Service User
-  version: 1.0.0
+  version: 0.0.1-beta
 host: user.glimpse.online
-basePath: "/"
+basePath: /
 consumes:
 - application/json
 produces:
 - application/json
 schemes:
-- https
+- http
 paths:
 
   "/healthz":
     get:
       description: Check the health of the service
-      operationId: healthz
-      produces:
-      - application/json
+      operationId: Healthz
       responses:
-        '200':
+        200:
           description: Service is healthy
           schema:
-            properties:
-              status:
-                type: boolean
+            $ref: "#/definitions/SuccessResponse"
 
-  "/user/{user_id}":
+  "/user":
+    post:
+      description: Create a new user
+      operationId: UserCreate
+      parameters:
+      - in: body
+        name: user
+        description: User Information
+        required: true
+        schema:
+          $ref: "#/definitions/UserParameters"
+      responses:
+        200:
+          description: User created
+          schema:
+            $ref: "#/definitions/UserParameters"
+        400:
+          description: Bad Request
+      security:
+        - firebase: []
+        - api_key: []
+
+  "/user/{userId}":
     get:
       description: Get the information of a selected user
       operationId: UserInfo
       parameters:
-      - name: user_id
+      - name: userId
         in: path
-        description: ID of the user
-        required: true
+        description: User Id
         type: string
-      produces:
-      - application/json
+        required: true
+      - name: user
+        in: body
+        description: User information
+        required: true
+        schema:
+          $ref: "#/definitions/UserParameters"
       responses:
-        '200':
+        200:
           description: Return the user information
           schema:
-            properties:
-              status:
-                type: boolean
-      security:
-      - api_key: []
+            $ref: "#/definitions/UserParameters"
+        404:
+          description: User not found
+
     put:
       description: Update the user information
       operationId: UserInfoUpdate
       parameters:
-      - name: user_id
+      - name: userId
         in: path
-        description: ID of the user
-        required: true
+        description: User Id
         type: string
-      produces:
-      - application/json
+        required: true
       responses:
-        '200':
-          description: Return true if the user was updated
+        200:
+          description: Return the user information
           schema:
-            properties:
-              status:
-                type: boolean
-      security:
-      - api_key: []
+            $ref: "#/definitions/UserParameters"
+        404:
+          description: User not found
+
+definitions:
+  SuccessResponse:
+    type: object
+    properties:
+      status:
+        type: boolean
+  UserParameters:
+    type: object
+    properties:
+      username:
+        type: string
+      email:
+        type: string
+      phone:
+        type: string
+
 securityDefinitions:
   api_key:
     type: apiKey
     name: key
     in: query
+
+  firebase:
+    authorizationUrl: ""
+    flow: implicit
+    type: oauth2
+    x-google-issuer: "https://securetoken.google.com/glimpse-123456"
+    x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com"
