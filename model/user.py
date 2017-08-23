@@ -25,7 +25,7 @@ class UserInfoById(Model):
 
 class UserInfoByUsername(Model):
     user_id = columns.Text(primary_key=True)
-    username = columns.Text(required=False)
+    username = columns.Text()
 
     def to_object(self):
         return {

@@ -95,11 +95,11 @@ definitions:
   UserParameters:
     type: object
     properties:
+      user_id:
+        type: string
       username:
         type: string
       email:
-        type: string
-      phone:
         type: string
 
 securityDefinitions:
@@ -114,3 +114,4 @@ securityDefinitions:
     type: oauth2
     x-google-issuer: "https://securetoken.google.com/glimpse-123456"
     x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com"
+    x-google-audiences: "glimpse-123456"
