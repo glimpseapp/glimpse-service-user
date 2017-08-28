@@ -52,16 +52,10 @@ paths:
         400:
           description: Bad Request
 
-  "/user/{userId}":
-    get:
-      description: Get the information of a selected user
-      operationId: UserInfo
+    put:
+      description: Update the user information
+      operationId: UserInfoUpdate
       parameters:
-      - name: userId
-        in: path
-        description: User Id
-        type: string
-        required: true
       - name: user
         in: body
         description: User information
@@ -76,15 +70,18 @@ paths:
         404:
           description: User not found
 
-    put:
-      description: Update the user information
-      operationId: UserInfoUpdate
+
+  "/user/{user_id}":
+    get:
+      description: Get the information of a selected user
+      operationId: UserInfo
       parameters:
-      - name: userId
-        in: path
-        description: User Id
-        type: string
+      - in: path
+        name: user_id
+        description: User Information
         required: true
+        type: string
+
       responses:
         200:
           description: Return the user information
@@ -113,8 +110,6 @@ definitions:
   UserParameters:
     type: object
     properties:
-      user_id:
-        type: string
       username:
         type: string
       email:
