@@ -23,6 +23,16 @@ paths:
           schema:
             $ref: "#/definitions/SuccessResponse"
 
+  "/me":
+    get:
+      description: Get User Info
+      operationId: Me
+      responses:
+        200:
+          description: Return the user info
+          schema:
+            $ref: "#/definitions/UserResponse"
+
   "/user":
     post:
       description: Create a new user
@@ -41,9 +51,6 @@ paths:
             $ref: "#/definitions/UserParameters"
         400:
           description: Bad Request
-      security:
-        - firebase: []
-        - api_key: []
 
   "/user/{userId}":
     get:
@@ -65,7 +72,7 @@ paths:
         200:
           description: Return the user information
           schema:
-            $ref: "#/definitions/UserParameters"
+            $ref: "#/definitions/UserResponse"
         404:
           description: User not found
 
@@ -82,7 +89,7 @@ paths:
         200:
           description: Return the user information
           schema:
-            $ref: "#/definitions/UserParameters"
+            $ref: "#/definitions/UserResponse"
         404:
           description: User not found
 
@@ -92,6 +99,17 @@ definitions:
     properties:
       status:
         type: boolean
+
+  UserResponse:
+    type: object
+    properties:
+      user_id:
+        type: string
+      username:
+        type: string
+      email:
+        type: string
+
   UserParameters:
     type: object
     properties:
@@ -101,6 +119,9 @@ definitions:
         type: string
       email:
         type: string
+
+security:
+  - firebase: []
 
 securityDefinitions:
   api_key:

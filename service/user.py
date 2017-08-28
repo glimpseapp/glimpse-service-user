@@ -1,3 +1,6 @@
+import base64
+import json
+
 from cassandra.cqlengine import connection
 from cassandra.cqlengine.query import LWTException
 from flask import make_response
@@ -43,7 +46,7 @@ class User(Resource):
             pass
 
 
-class CreateUser(User):
+class CreateUser(Resource):
     def post(self):
         user = request.get_json(silent=True)
         if not user:
@@ -64,3 +67,18 @@ class CreateUser(User):
         )
 
         return UserInfoById.get(user_id=user_id).to_object()
+
+
+class Me(Resource):
+    def get(self):
+        user_id = self.get_user_id_from_jwt()
+        connection.setup(hosts=CASSANDRA_HOSTS, default_keyspace=USER_KEYSPACE)
+        user = UserInfoById.get(user_id=user_id).to_object()
+        if not user:
+            return make_response("User not found", 404)
+        return user
+
+    def get_user_id_from_jwt(self):
+        userinfo_encoded = request.headers.get("X-Endpoint-Api-Userinfo")
+        userinfo = json.loads(base64.b64decode(userinfo_encoded))
+        return userinfo.get("id")
