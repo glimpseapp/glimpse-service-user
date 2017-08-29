@@ -24,8 +24,8 @@ class UserInfoById(Model):
 
 
 class UserInfoByUsername(Model):
-    user_id = columns.Text(primary_key=True)
-    username = columns.Text()
+    username = columns.Text(primary_key=True)
+    user_id = columns.Text()
 
     def to_object(self):
         return {

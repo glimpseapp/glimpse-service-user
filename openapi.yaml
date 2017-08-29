@@ -48,7 +48,7 @@ paths:
         200:
           description: User created
           schema:
-            $ref: "#/definitions/UserParameters"
+            $ref: "#/definitions/UserResponse"
         400:
           description: Bad Request
 
@@ -61,7 +61,7 @@ paths:
         description: User information
         required: true
         schema:
-          $ref: "#/definitions/UserParameters"
+          $ref: "#/definitions/UserUpdateParameters"
       responses:
         200:
           description: Return the user information
@@ -112,6 +112,11 @@ definitions:
     properties:
       username:
         type: string
+      email:
+        type: string
+
+  UserUpdateParameters:
+    properties:
       email:
         type: string
 
