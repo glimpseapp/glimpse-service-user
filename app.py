@@ -3,8 +3,12 @@ from flask import Flask
 from flask_restful import Api
 
 from conf.config import HTTP_HOST, HTTP_PORT
+
+from service.create_user import CreateUser
+from service.get_user import GetUser
 from service.healthz import Healthz
-from service.user import CreateUser, Me, UpdateUser, GetUser
+from service.me import Me
+from service.update_user import UpdateUser
 
 app = Flask(__name__)
 api = Api(app)
