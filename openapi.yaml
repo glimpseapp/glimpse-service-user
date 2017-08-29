@@ -71,16 +71,17 @@ paths:
           description: User not found
 
 
-  "/user/{user_id}":
-    get:
-      description: Get the information of a selected user
+  "/users":
+    post:
+      description: Get the information of list of user
       operationId: UserInfo
       parameters:
-      - in: path
-        name: user_id
-        description: User Information
+      - in: body
+        name: body
+        description: User Ids
         required: true
-        type: string
+        schema:
+          $ref: "#/definitions/UserIdsParameters"
 
       responses:
         200:
@@ -100,6 +101,16 @@ definitions:
   UserResponse:
     type: object
     properties:
+      results:
+        type: string
+      users:
+        type: array
+        items:
+          $ref: "#/definitions/UserList"
+
+  UserList:
+    type: object
+    properties:
       user_id:
         type: string
       username:
@@ -116,9 +127,22 @@ definitions:
         type: string
 
   UserUpdateParameters:
+    type: object
     properties:
       email:
         type: string
+
+  UserIdsParameters:
+    type: object
+    properties:
+      user_ids:
+        type: array
+        items:
+          $ref: "#/definitions/UserIds"
+
+  UserIds:
+    type: string
+    description: List of user ids
 
 security:
   - firebase: []
