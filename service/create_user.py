@@ -9,7 +9,6 @@ from service.common import get_user_id_from_jwt
 
 class CreateUser(Resource):
     def post(self):
-        user_id = get_user_id_from_jwt()
         if not user_id:
             return make_response("You must send the userInfo into the header X-Endpoint-Api-Userinfo", 405)
 
